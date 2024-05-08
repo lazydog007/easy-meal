@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page/tools/shadcn-ui-theme-generator */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: #2f7336;
+
+    --background: 134 27.3% 2.56%;
+    --foreground: 134 4.2% 96.6%;
+
+    --muted: 134 21% 9.6%;
+    --muted-foreground: 134 4.2% 53.2%;
+
+    --popover: 134 56.6% 4.16%;
+    --popover-foreground: 134 4.2% 96.6%;
+
+    --card: 134 56.6% 4.16%;
+    --card-foreground: 134 4.2% 96.6%;
+
+    --border: 134 21% 9.6%;
+    --input: 134 21% 9.6%;
+
+    --primary: 134 42% 32%;
+    --primary-foreground: 134 4.2% 96.6%;
+
+    --secondary: 134 21% 9.6%;
+    --secondary-foreground: 134 4.2% 96.6%;
+
+    --accent: 134 21% 9.6%;
+    --accent-foreground: 134 4.2% 96.6%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 134 4.2% 96.6%;
+
+    --ring: 134 42% 32%;
+  }
+}
+
+/* Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 5px;
+} */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #171717; /* neutral-900 */
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #404040; /* neutral-800 */
+}
+
+/* ====================================== */
+html,
+body {
+  background-color: #262626; /* neutral-800 */
+}
+
+.auth {
+  @apply flex-center min-h-screen w-full;
+  background-image: var(--gradient);
+}
+
+/* 16 */
+.p-16-semibold {
+  @apply font-semibold text-[16px] leading-[140%];
+}
+
+@layer utilities {
+  /* ===== ALIGNMENTS */
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+}
