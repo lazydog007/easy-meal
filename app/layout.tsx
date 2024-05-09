@@ -2,9 +2,9 @@ import Providers from "@/components/shared/Providers"
 import { Toaster } from "@/components/ui/toaster"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
-// import { Inter } from "next/font/google"
+import { DM_Sans } from "next/font/google"
 import "./globals.css"
-// const inter = Inter({ subsets: ["latin"] })
+const dmSans = DM_Sans({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Easy Meal",
@@ -20,8 +20,8 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          {/* <body className={inter.className}> */}
-          <body>
+          <body className={dmSans.className}>
+            {/* <body> */}
             {children}
             <Toaster />
           </body>

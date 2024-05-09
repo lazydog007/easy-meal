@@ -4,21 +4,21 @@ import "../globals.css"
 
 export default function PlanLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <div>
-      <html lang="en">
-        <SignedIn>
+    <>
+      <SignedIn>
+        <div className="flex flex-col h-screen text-white bg-black ">
           <Header />
-          <div>{children}</div>
-        </SignedIn>
-        <SignedOut>
-          {typeof window !== "undefined" &&
-            (window.location.href = process.env.NEXT_BASE_URL!)}
-        </SignedOut>
-      </html>
-    </div>
+          {children}
+        </div>
+      </SignedIn>
+      <SignedOut>
+        {typeof window !== "undefined" &&
+          (window.location.href = process.env.NEXT_BASE_URL!)}
+      </SignedOut>
+    </>
   )
 }
