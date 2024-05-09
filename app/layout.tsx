@@ -2,13 +2,13 @@ import Providers from "@/components/shared/Providers"
 import { Toaster } from "@/components/ui/toaster"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+// import { Inter } from "next/font/google"
 import "./globals.css"
-const inter = Inter({ subsets: ["latin"] })
+// const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "APP NAME",
-  description: "Get Power",
+  title: "Easy Meal",
+  description: "No more headaches for planning your meals",
 }
 
 export default function RootLayout({
@@ -20,7 +20,8 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          <body className={inter.className}>
+          {/* <body className={inter.className}> */}
+          <body>
             {children}
             <Toaster />
           </body>
