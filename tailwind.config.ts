@@ -80,6 +80,9 @@ const config = {
     require("tailwindcss-scrollbar"),
     require("daisyui"),
   ],
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
+  },
 } satisfies Config
 
 export default config

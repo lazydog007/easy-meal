@@ -1,5 +1,7 @@
 import Providers from "@/components/shared/Providers"
 import { Toaster } from "@/components/ui/toaster"
+import ClientThemeWrapper from "@/context/ClientThemeWrapper"
+import { ThemeProvider } from "@/context/ThemeContext"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { DM_Sans } from "next/font/google"
@@ -22,8 +24,12 @@ export default function RootLayout({
         <html lang="en">
           <body className={dmSans.className}>
             {/* <body> */}
-            {children}
-            <Toaster />
+            <ThemeProvider>
+              <ClientThemeWrapper>
+                {children}
+                <Toaster />
+              </ClientThemeWrapper>
+            </ThemeProvider>
           </body>
         </html>
       </Providers>

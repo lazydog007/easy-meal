@@ -30,6 +30,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-scrollbar": "^0.1.0",
+    "theme-change": "^2.5.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
