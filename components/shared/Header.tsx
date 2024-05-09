@@ -1,18 +1,19 @@
 "use client"
-import { ThemeContext } from "@/context/ThemeContext"
+import { DARK_MODE, LIGHT_MODE, ThemeContext } from "@/context/ThemeContext"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 
 const Header = () => {
   const { changeTheme, theme } = useContext(ThemeContext)
-  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("light")
+  const light_mode = LIGHT_MODE
+  const [currentTheme, setCurrentTheme] = useState<string | string>(LIGHT_MODE)
   useEffect(() => {
     setCurrentTheme(theme)
   }, [theme])
 
   const handleThemeChange = () => {
-    const newTheme = currentTheme === "light" ? "dark" : "light"
+    const newTheme = currentTheme === LIGHT_MODE ? DARK_MODE : LIGHT_MODE
     setCurrentTheme(newTheme)
     changeTheme(newTheme)
   }
@@ -22,8 +23,8 @@ const Header = () => {
       <div className="w-[700px]">
         <header
           className={cn("navbar rounded-full shadow-2xl", {
-            "bg-white": theme === "light",
-            "bg-white/10": theme === "dark",
+            "bg-white": theme === LIGHT_MODE,
+            "bg-white/10": theme === DARK_MODE,
           })}
         >
           <div className="navbar-start px-8 font-bold text-xl">
@@ -46,13 +47,13 @@ const Header = () => {
               <input
                 type="checkbox"
                 className="theme-controller"
-                checked={theme === "dark"}
+                checked={theme === DARK_MODE}
                 onChange={handleThemeChange}
               />
 
               {/* sun icon */}
               <svg
-                className="swap-off fill-current w-10 h-10"
+                className="swap-off fill-current w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >
@@ -60,7 +61,7 @@ const Header = () => {
               </svg>
               {/* moon icon */}
               <svg
-                className="swap-on fill-current w-10 h-10"
+                className="swap-on fill-current w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >

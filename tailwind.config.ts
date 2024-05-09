@@ -81,7 +81,7 @@ const config = {
     require("daisyui"),
   ],
   daisyui: {
-    themes: ["light", "dark", "cupcake"],
+    themes: ["bumblebee", "esmerald", "dim", "dark"],
   },
 } satisfies Config
 
