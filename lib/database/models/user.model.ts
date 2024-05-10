@@ -6,28 +6,28 @@ export interface IModelLimit {
 export interface IUser extends Document {
   userId: string
   email: string
-  username: string
+  // username: string
   photo?: string
   firstName?: string
   lastName?: string
-  limits?: IModelLimit[]
+  // limits?: IModelLimit[]
 }
 
-const ModelLimit = new Schema({
-  model: { type: String, required: true },
-  requests: { type: Number, required: true },
-})
+// const ModelLimit = new Schema({
+//   model: { type: String, required: true },
+//   requests: { type: Number, required: true },
+// })
 
 const UserSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
+  // username: { type: String, required: true, unique: true },
   photo: { type: String },
   firstName: { type: String },
   lastName: { type: String },
   planId: { type: Number, default: 1 },
-  creditBalance: { type: Number, default: 10 },
-  limits: { type: [ModelLimit], required: true },
+  // creditBalance: { type: Number, default: 10 },
+  // limits: { type: [ModelLimit], required: true },
 })
 
 const User = models?.User || model("User", UserSchema)

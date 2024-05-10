@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 
-import User, { IModelLimit } from "../database/models/user.model"
+import User from "../database/models/user.model"
 import { connectToDatabase } from "../database/mongoose"
 import { handleError } from "../utils"
 
@@ -10,17 +10,17 @@ import { handleError } from "../utils"
 declare type CreateUserParams = {
   userId: string
   email: string
-  username: string
+  // username: string
   firstName: string
   lastName: string
   photo: string
-  limits: IModelLimit[]
+  // limits: IModelLimit[]
 }
 
 declare type UpdateUserParams = {
   firstName: string
   lastName: string
-  username: string
+  // username: string
   photo: string
 }
 
@@ -93,32 +93,32 @@ export async function deleteUser(userId: string) {
 
 // USE CREDITS
 // connects to MongoDB
-export async function updateSubscriptionLimits(userId: string, model: string) {
-  try {
-    await connectToDatabase()
+// export async function updateSubscriptionLimits(userId: string, model: string) {
+//   try {
+//     await connectToDatabase()
 
-    const subscription = await User.findOne({
-      userId: userId,
-    })
-    if (!subscription) {
-      throw new Error("Subscription not found")
-    }
+//     const subscription = await User.findOne({
+//       userId: userId,
+//     })
+//     if (!subscription) {
+//       throw new Error("Subscription not found")
+//     }
 
-    const updatedLimits = subscription.limits.map((limit: IModelLimit) => {
-      if (limit.model === model) {
-        return { model: model, requests: limit.requests - 1 }
-      }
-      return limit
-    })
+//     const updatedLimits = subscription.limits.map((limit: IModelLimit) => {
+//       if (limit.model === model) {
+//         return { model: model, requests: limit.requests - 1 }
+//       }
+//       return limit
+//     })
 
-    const updatedSubscription = await User.findOneAndUpdate(
-      { userId },
-      { $set: { limits: updatedLimits } },
-      { new: true }
-    )
+//     const updatedSubscription = await User.findOneAndUpdate(
+//       { userId },
+//       { $set: { limits: updatedLimits } },
+//       { new: true }
+//     )
 
-    return JSON.parse(JSON.stringify(updatedSubscription))
-  } catch (error) {
-    handleError(error)
-  }
-}
+//     return JSON.parse(JSON.stringify(updatedSubscription))
+//   } catch (error) {
+//     handleError(error)
+//   }
+// }

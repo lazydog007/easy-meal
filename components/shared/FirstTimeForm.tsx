@@ -15,9 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { handleError } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
+import React from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useToast } from "../ui/use-toast"
 
 const formSchema = z.object({
   age: z.string().min(1, {
@@ -26,43 +30,55 @@ const formSchema = z.object({
   gender: z.string().min(0, {
     message: "Missing gender",
   }),
-  weight: z.string().min(1, {
+  weight: z.string().min(2, {
     message: "Missing weight",
   }),
-  height: z.string().min(1, {
+  height: z.string().min(2, {
     message: "Missing height",
   }),
   activityLevel: z.string().min(1, {
     message: "Missing activity level",
   }),
-  diet: z.string(),
-  allergies: z.string(),
-  dislikes: z.string(),
-  cuisine: z.string(),
+  diet: z.string().optional(),
+  protein: z.string().optional(),
+  allergies: z.string().optional(),
+  dislikes: z.string().optional(),
+  cuisine: z.string().optional(),
 })
 
 type Props = {}
 
 const FirstTimeForm = (props: Props) => {
+  const { toast } = useToast()
+  const [isPendingResponse, setIsPendingResponse] = React.useState(false)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       age: "28",
-      // gender: "M",
+      gender: "M",
       weight: "75",
       height: "170",
-      // activityLevel: "active",
-      diet: "",
-      allergies: "",
-      dislikes: "",
+      activityLevel: "active",
       cuisine: "japanese,caribean,italian",
     },
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    try {
+      setIsPendingResponse(true)
+      const response = await axios.post("/api/createProfile", {
+        userProfile: values,
+      })
+      console.log("new profile", response.data)
+    } catch (error) {
+      handleError(error)
+    } finally {
+      setIsPendingResponse(false)
+    }
+
     console.log(values)
   }
 
@@ -77,7 +93,7 @@ const FirstTimeForm = (props: Props) => {
                 name="age"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Age</FormLabel>
+                    <FormLabel>Age*</FormLabel>
                     <FormControl>
                       <Input placeholder="25" {...field} />
                     </FormControl>
@@ -90,7 +106,7 @@ const FirstTimeForm = (props: Props) => {
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel>Gender*</FormLabel>
                     <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
@@ -111,7 +127,7 @@ const FirstTimeForm = (props: Props) => {
                 name="weight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Weight in kg</FormLabel>
+                    <FormLabel>Weight in kg*</FormLabel>
                     <FormControl>
                       <Input placeholder="in kg" {...field} />
                     </FormControl>
@@ -124,7 +140,7 @@ const FirstTimeForm = (props: Props) => {
                 name="height"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Height in cm</FormLabel>
+                    <FormLabel>Height in cm*</FormLabel>
                     <FormControl>
                       <Input placeholder="in cm" {...field} />
                     </FormControl>
@@ -137,7 +153,7 @@ const FirstTimeForm = (props: Props) => {
                 name="activityLevel"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Activity Level</FormLabel>
+                    <FormLabel>Activity Level*</FormLabel>
                     <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
@@ -182,6 +198,7 @@ const FirstTimeForm = (props: Props) => {
               <FormField
                 control={form.control}
                 name="protein"
+                defaultValue="minimum"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Protein Intake</FormLabel>
@@ -257,7 +274,7 @@ const FirstTimeForm = (props: Props) => {
   }
   return (
     <div className="flex flex-col w-full items-center">
-      <p className="text-4xl">Let's get started</p>
+      <p className="text-4xl">{`Let's get started`}</p>
       {infoForm()}
     </div>
   )
