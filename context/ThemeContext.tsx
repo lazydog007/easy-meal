@@ -8,7 +8,7 @@ interface ThemeContextValue {
 }
 
 export const LIGHT_MODE = "bumblebee"
-export const DARK_MODE = "dark"
+export const DARK_MODE = "dim"
 
 export const ThemeContext = createContext<ThemeContextValue>({
   theme: LIGHT_MODE,

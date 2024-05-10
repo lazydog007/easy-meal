@@ -22,22 +22,22 @@ const Header = () => {
     <div className="flex justify-center p-8">
       <div className="w-[700px]">
         <header
-          className={cn("navbar rounded-full shadow-2xl", {
-            "bg-white": theme === LIGHT_MODE,
+          className={cn("navbar rounded-full shadow-2xl border ", {
+            "bg-white border-black/30": theme === LIGHT_MODE,
             "bg-white/10": theme === DARK_MODE,
           })}
         >
           <div className="navbar-start px-8 font-bold text-xl">
             <Link href={"/"}>Easy Meal</Link>
           </div>
-          <div className="navbar-center">
-            <div className="px-4">
+          <div className="navbar-center gap-8">
+            <div className="hover:bg-primary/60 py-1 px-4 rounded-full">
               <Link href={"/plan"}>Home</Link>
             </div>
-            <div className="px-4">
+            <div className="hover:bg-primary/60 py-1 px-4 rounded-full">
               <Link href={"/plan/profile"}>Profile</Link>
             </div>
-            <div className="px-4">
+            <div className="hover:bg-primary/60 py-1 px-4 rounded-full">
               <Link href={"/plan/history"}>History</Link>
             </div>
           </div>

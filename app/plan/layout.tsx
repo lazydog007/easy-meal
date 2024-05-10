@@ -10,7 +10,7 @@ export default function PlanLayout({
   return (
     <>
       <SignedIn>
-        <div className="flex flex-col h-screen ">
+        <div className="flex flex-col h-screen">
           <Header />
           {children}
         </div>
