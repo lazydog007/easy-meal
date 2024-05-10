@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <div className="flex justify-center p-8">
-      <div className="w-[700px]">
+      <div className="w-auto md:w-[700px]">
         <header
           className={cn("navbar rounded-full shadow-2xl border ", {
             "bg-white border-black/30": theme === LIGHT_MODE,
