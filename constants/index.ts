@@ -103,11 +103,11 @@ const generatedMealPlanExample: MealPlan[] = [
   },
 ]
 
-export const MALE_BMR: (
+export const MALE_BMR = (
   weight: number,
   height: number,
   age: number
-) => number = (weight, height, age) => {
+): number => {
   return (
     88.362 +
     13.397 * Number(weight) +
@@ -115,11 +115,11 @@ export const MALE_BMR: (
     5.677 * Number(age)
   )
 }
-export const FEMALE_BMR: (
+export const FEMALE_BMR = (
   weight: number,
   height: number,
   age: number
-) => number = (weight, height, age) => {
+): number => {
   return (
     88.362 +
     13.397 * Number(weight) +
@@ -127,10 +127,24 @@ export const FEMALE_BMR: (
     5.677 * Number(age)
   )
 }
+
 export const activityLevelMap: Record<string, number> = {
   sedentary: 1.2,
   lightly: 1.375,
   moderately: 1.55,
   Active: 1.725,
   // "Extra active": 1.9,
+}
+
+export const PROTEIN_INTAKE = (
+  weight: number,
+  proteinIntake: string
+): number => {
+  return weight * proteinIntakeMap[proteinIntake]
+}
+
+export const proteinIntakeMap: Record<string, number> = {
+  minimum: 0.8,
+  regular: 1,
+  high: 1.2,
 }

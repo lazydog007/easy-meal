@@ -1,6 +1,12 @@
 "use server"
 
-import { generateDailyMealPrompt } from "@/constants"
+import {
+  activityLevelMap,
+  FEMALE_BMR,
+  generateDailyMealPrompt,
+  MALE_BMR,
+  PROTEIN_INTAKE,
+} from "@/constants"
 import { getProfileById } from "@/lib/actions/profile.action"
 import { MealPlanProfile } from "@/lib/database/models/profile.model"
 // import { addMessagesToChat } from "@/lib/actions/chat.actions"
@@ -42,30 +48,33 @@ export async function POST(req: Request) {
     const userProfile = await getProfileById(userId!)
 
     const calculateCalories = (
-      weight: string,
-      height: string,
-      age: string,
+      weight: number,
+      height: number,
+      age: number,
       gender: string,
       activityLevel: string
     ) => {
       const bmr =
         gender === "M"
-          ? 88.362 +
-            13.397 * Number(weight) +
-            4.799 * Number(height) -
-            5.677 * Number(age)
-          : 447.593 +
-            9.247 * Number(weight) +
-            3.098 * Number(height) -
-            4.33 * Number(age)
+          ? MALE_BMR(weight, height, age)
+          : FEMALE_BMR(weight, height, age)
 
-      const calories = bmr
+      const calories = bmr * activityLevelMap[activityLevel]
 
       return calories
     }
     const mealPlan: MealPlanProfile = {
-      dailyCalories: userProfile.diet,
-      dailyProtein: userProfile.diet,
+      dailyCalories: calculateCalories(
+        Number(userProfile.weight),
+        Number(userProfile.height),
+        Number(userProfile.age),
+        userProfile.gender,
+        userProfile.activityLevel
+      ),
+      dailyProtein: PROTEIN_INTAKE(
+        Number(userProfile.weight),
+        userProfile.protein
+      ),
       diet: userProfile.diet!,
       allergies: userProfile.diet!,
       dislikes: userProfile.diet!,
