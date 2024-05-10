@@ -26,7 +26,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   if (!isMounted) {
-    return <>Loading...</>
+    return (
+      <span className="flex justify-center items-center loading loading-dots loading-lg"></span>
+    )
   }
 
   const changeTheme = (newTheme: string) => {

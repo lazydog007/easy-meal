@@ -38,10 +38,10 @@ export declare type UpdateProfileParams = {
 // CREATE
 export async function createProfile(profile: CreateProfileParams) {
   try {
-    console.log("\n")
-    console.log("profile", profile)
     await connectToDatabase()
-    console.log("Connected to DB")
+    await setTimeout(() => {
+      console.log("Waited for 5 seconds")
+    }, 5000) // 2000 milliseconds = 2 seconds
     const newProfile = await Profile.create(profile)
 
     return JSON.parse(JSON.stringify(newProfile))

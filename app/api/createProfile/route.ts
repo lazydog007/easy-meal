@@ -2,7 +2,7 @@ import {
   createProfile,
   CreateProfileParams,
 } from "@/lib/actions/profile.action"
-import {} from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server"
 
 // /api/createProfile
