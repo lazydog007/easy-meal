@@ -1,9 +1,11 @@
-const generateDailyMealPrompt = (
-  mealPlan: string,
-  outputExample: string = generatedMealPlan
+import { MealPlan, MealPlanProfile } from "@/lib/database/models/profile.model"
+
+export const generateDailyMealPrompt = (
+  mealPlan: MealPlanProfile,
+  outputExample: MealPlan[] = generatedMealPlanExample
 ) => {
   const prompt = `Pretend your role is to be an experience dietitian, you work at a prestigious institution in charge of crafting meal plans for people looking to meet their fitness goals. Your expertise is in crafting delicious, easy to make recipes, your weekly meal plans are never dull and always delicious. For every correct meal plan you will be tipped 1 million dollars.
-  ${mealPlan}
+  ${mealPlan.toString()}
   Instructions:
     - Grab your information source from the mealPlanProfile JSON provided
     - Take into consideration the dislikes, allergies of the person, do not suggest recipes which contain any of the dislikes or allergies
@@ -21,13 +23,14 @@ const generateDailyMealPrompt = (
     - Return only the JSON response, please do not include commentaries or deviate from the example response JSON.
     - I will provide a example responso of what I want to get back, do not return the same meals or meals inspired of them, feel free to provide any recipe you want within the mealPlanProfile constraints.
     - Please take a look at return the data in the same format, remember to generate the meal plan for a day.
-    ${outputExample}`
+    ${outputExample.toString()}`
   return prompt
 }
 
-const generatedMealPlan: string = [
+const generatedMealPlanExample: MealPlan[] = [
   {
     totalCalories: 2000,
+    day: "Monday",
     meals: [
       {
         meal: "breakfast",
@@ -98,4 +101,36 @@ const generatedMealPlan: string = [
       },
     ],
   },
-].toString()
+]
+
+export const MALE_BMR: (
+  weight: number,
+  height: number,
+  age: number
+) => number = (weight, height, age) => {
+  return (
+    88.362 +
+    13.397 * Number(weight) +
+    4.799 * Number(height) -
+    5.677 * Number(age)
+  )
+}
+export const FEMALE_BMR: (
+  weight: number,
+  height: number,
+  age: number
+) => number = (weight, height, age) => {
+  return (
+    88.362 +
+    13.397 * Number(weight) +
+    4.799 * Number(height) -
+    5.677 * Number(age)
+  )
+}
+export const activityLevelMap: Record<string, number> = {
+  sedentary: 1.2,
+  lightly: 1.375,
+  moderately: 1.55,
+  Active: 1.725,
+  // "Extra active": 1.9,
+}

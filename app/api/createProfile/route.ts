@@ -1,7 +1,5 @@
-import {
-  createProfile,
-  CreateProfileParams,
-} from "@/lib/actions/profile.action"
+import { createProfile } from "@/lib/actions/profile.action"
+import { CreateProfileParams } from "@/lib/database/models/profile.model"
 import { auth } from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server"
 

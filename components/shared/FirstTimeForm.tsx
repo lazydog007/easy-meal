@@ -69,13 +69,13 @@ const FirstTimeForm = (props: Props) => {
     // Do something with the form values.
     try {
       setIsPendingResponse(true)
-      await setTimeout(() => {
-        console.log("Waited for 2 seconds")
-      }, 50000) // 2000 milliseconds = 2 seconds
       const response = await axios.post("/api/createProfile", {
         userProfile: values,
       })
-      console.log("new profile", response.data)
+      toast({
+        description: "Profile created successfully",
+        title: "Success",
+      })
     } catch (error) {
       handleError(error)
     } finally {

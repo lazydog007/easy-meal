@@ -2,38 +2,12 @@
 
 import { revalidatePath } from "next/cache"
 
-import Profile from "../database/models/profile.model"
+import Profile, {
+  CreateProfileParams,
+  UpdateProfileParams,
+} from "../database/models/profile.model"
 import { connectToDatabase } from "../database/mongoose"
 import { handleError } from "../utils"
-
-// ====== USER PARAMS
-
-export declare type CreateProfileParams = {
-  userId: string
-  age: string
-  gender: string
-  weight: string
-  height: string
-  activityLevel: string
-  diet?: string
-  protein?: string
-  allergies?: string
-  dislikes?: string
-  cuisine?: string
-}
-
-export declare type UpdateProfileParams = {
-  age?: string
-  gender?: string
-  weight?: string
-  height?: string
-  activityLevel?: string
-  diet?: string
-  protein?: string
-  allergies?: string
-  dislikes?: string
-  cuisine?: string
-}
 
 // CREATE
 export async function createProfile(profile: CreateProfileParams) {
