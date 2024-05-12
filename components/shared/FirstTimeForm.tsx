@@ -59,7 +59,7 @@ const FirstTimeForm = (props: Props) => {
       gender: "M",
       weight: "75",
       height: "170",
-      activityLevel: "active",
+      activityLevel: "moderate",
       cuisine: "japanese,caribean,italian",
     },
   })

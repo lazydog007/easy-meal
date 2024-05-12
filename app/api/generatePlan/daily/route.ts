@@ -40,23 +40,19 @@ export async function POST(req: Request) {
 
     const targetProtein = await PROTEIN_INTAKE(
       Number(userProfile.weight),
-      userProfile.protein
+      "regular"
+      // userProfile.protein
     )
 
     const mealPlan: MealPlanProfile = {
       dailyCalories: targetCalories,
       dailyProtein: targetProtein,
       diet: userProfile.diet!,
-      allergies: userProfile.diet!,
-      dislikes: userProfile.diet!,
-      cuisine: userProfile.diet!,
+      allergies: userProfile.allergies!,
+      dislikes: userProfile.dislikes!,
+      cuisine: userProfile.cuisine!,
     }
 
-    console.log("\n")
-    console.log("targetCalories", targetCalories)
-    console.log("\n")
-    console.log("targetProtein", targetProtein)
-    console.log("\n")
     // console.log("mealPlan", mealPlan)
 
     // generate prompt

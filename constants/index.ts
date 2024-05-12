@@ -12,32 +12,38 @@ export const generateDailyMealPrompt = (
   1. Use the provided mealPlanProfile JSON to gather the necessary information. If there is information missing about the dislikes. allergies or cuisine type, feel free to provide anything delicious for westeners.
   2. Take into consideration the person's dislikes and allergies, and do not suggest recipes containing any of those ingredients.
   3. Strictly adhere to the specified diet type.
-  4. Consider the required amount of protein for the diet, whether it's high or low.
+  4. The amount of protein should be a minimum of to the mealPlanProfile dailyProtein, you can always go beyond it
   5. Meals should be simple to prepare and not require long cooking times, yet still be delicious.
   6. Provide the macronutrients (protein, carbs, and fats) in grams for each meal.
-  7 Provide the total number of calories for each meal.
+  7. The sum of all meal calories must be equal to the dailyCalories specified in the mealPlanProfile, with a strict margin of error of 100 calories per day.
   8. Do not stray too far from the person's preferred cuisine type.
   9. For each meal, provide the total list of required ingredients and detailed instructions on how to prepare it.
-  10. The sum of all meals for each day should total the dailyCalories specified in the profile, with a strict margin of error of 100 calories per day.
-  12. Create a daily meal plan for the user, including at least three meals (breakfast, lunch, and dinner) per day.
-  For each meal, provide the details with their respective macros and calories.
-  13. Validate the calorie calculations to ensure the meals match the specified calories.
-  14. Return only the JSON response, without any additional commentary or deviation from the example format. Do no include the \`\`\`json formatting, just the JSON Object so it can be parsed in code.
-  15. Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want within the constraints of the mealPlanProfile.
-  16. Follow the provided example response JSON format when returning the data.
-  17. Generate the meal plan for a single day.
+  10. The sum of all meals for each day should total the dailyCalories specified in the profile, with a strict margin of error of 100 calories per day, store the sum in a varible named "mealCalories"
+  12. Create a daily meal plan for the user, including at least three meals (breakfast, lunch, and dinner) per day. You can also provide a snack between lunch and dinner if there are enough calories, it should be of a minimum of 200 calories.
+  13. Serving size of each meal and recipe should be for one person, do not provide receipes that are for multiple servings.
+  14. For each meal, provide the details with their respective macros and calories.
+  15. Make sure the calculated variable "mealCalories" is equal to the dailyCalories specified in the mealPlanProfile.
+  16. Validate the calorie calculations to ensure the meals match the specified calories. be realistic and accurate about the provided calories and macros
+  17. If the sum of all the calories in the meal provided are not equal to the dailyCalories specified in the mealPlanProfile within a strict margin of error of 100 calories, provide another meal that completes that calorie count.
+  18. Return only the JSON response, without any additional commentary or deviation from the example format. Do no include the \`\`\`json formatting, just the JSON Object so it can be parsed in code.
+  19. Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want within the constraints of the mealPlanProfile.
+  20. Follow the provided example response JSON format when returning the data.
+  22. Generate the meal plan for a single day. remember you can provide more than three meals per day, but it has to be a minimum of 3, also make sure the sum of all meals' calores are equal to the mealPlanProfile dailyCalories.
   18. I want the return response to only be the JSON object so it can be parsed through Typescript.
 
-  Example JSON (use this as template for the response) =   ${JSON.stringify(
+  Example JSON (use this as template for the response) = ${JSON.stringify(
     outputExample
-  )}}`
+  )}}
+  
+  note: notice how the totalCalories === SUM(meals.calories)
+  `
 
   return prompt
 }
 
 const generatedMealPlanExample: MealPlan[] = [
   {
-    totalCalories: "mealPlan.dailyCalories",
+    totalCalories: "2300", // 500 + 700 + 300 + 800
     day: "",
     meals: [
       {
@@ -59,8 +65,13 @@ const generatedMealPlanExample: MealPlan[] = [
           { name: "Low-sodium soy sauce", quantity: "1 tbsp" },
           { name: "Sesame oil", quantity: "1 tsp" },
         ],
-        instructions:
-          "1. Beat the eggs with soy sauce and a pinch of salt and pepper. 2. Heat sesame oil in a non-stick skillet over medium heat. 3. Add the diced chicken and mixed vegetables, and cook until the chicken is almost cooked through. 4. Pour in the beaten eggs and scramble everything together until the eggs are fully cooked. 5. Serve hot.",
+        instructions: [
+          "1. Beat the eggs with soy sauce and a pinch of salt and pepper",
+          "2. Heat sesame oil in a non-stick skillet over medium heat",
+          "3. Add the diced chicken and mixed vegetables, and cook until the chicken is almost cooked through",
+          "4. Pour in the beaten eggs and scramble everything together until the eggs are fully cooked",
+          "5. Serve hot",
+        ],
       },
       {
         meal: "lunch",
@@ -92,6 +103,25 @@ const generatedMealPlanExample: MealPlan[] = [
         ],
       },
       {
+        meal: "snack",
+        macros: {
+          protein: 25,
+          carbs: 30,
+          fat: 5,
+        },
+        calories: 300,
+        recipeName: "Protein Shake with Banana",
+        ingredients: [
+          { name: "Water", quantity: "240ml" },
+          { name: "Protein of Choice", quantity: "1 serving" },
+          { name: "Banana", quantity: "Medium/Large" },
+        ],
+        instructions: [
+          "1. Mix water and protein in a shaker bottle",
+          "2. Eat Banana",
+        ],
+      },
+      {
         meal: "dinner",
         macros: {
           protein: 60,
@@ -111,8 +141,13 @@ const generatedMealPlanExample: MealPlan[] = [
           { name: "Lemon juice", quantity: "1 tbsp" },
           { name: "Salt and pepper", quantity: "to taste" },
         ],
-        instructions:
-          "1. Bring a pot of salted water to a boil. Cook the whole wheat pasta according to package instructions. Drain and set aside. 2. Season the salmon fillets with salt and pepper. Grill or bake the salmon until cooked through, about 6-8 minutes per side. 3. In a large bowl, combine the cooked pasta, basil pesto, halved cherry tomatoes, and spinach. Toss to coat. 4. Add the minced garlic, lemon juice, and a drizzle of olive oil. Toss again to combine. 5. Serve the pesto pasta alongside the grilled salmon.",
+        instructions: [
+          "1. Bring a pot of salted water to a boil. Cook the whole wheat pasta according to package instructions. Drain and set aside",
+          "2. Season the salmon fillets with salt and pepper. Grill or bake the salmon until cooked through, about 6-8 minutes per side",
+          "3. In a large bowl, combine the cooked pasta, basil pesto, halved cherry tomatoes, and spinach. Toss to coat",
+          "4. Add the minced garlic, lemon juice, and a drizzle of olive oil. Toss again to combine",
+          "5. Serve the pesto pasta alongside the grilled salmon",
+        ],
       },
     ],
   },
@@ -146,8 +181,8 @@ export const FEMALE_BMR = (
 
 export const activityLevelMap: Map<string, number> = new Map([
   ["sedentary", 1.2],
-  ["lightly", 1.375],
-  ["moderately", 1.55],
+  ["lights", 1.375],
+  ["moderate", 1.55],
   ["active", 1.725],
   // ['extra active', 1.9],
 ])
@@ -169,7 +204,7 @@ export const calculateCalories = (
       ? MALE_BMR(weight, height, age)
       : FEMALE_BMR(weight, height, age)
 
-  const calories = bmr * activityLevelMap.get(activityLevel)!
+  const calories = bmr * (activityLevelMap.get(activityLevel)! || 1)
   return Math.round(calories)
 }
 
@@ -177,7 +212,7 @@ export const PROTEIN_INTAKE = (
   weight: number,
   proteinIntake: string
 ): number => {
-  return weight * proteinIntakeMap.get(proteinIntake)!
+  return weight * 2.2 * (proteinIntakeMap.get(proteinIntake)! || 1)
 }
 
 export const proteinIntakeMap: Map<string, number> = new Map([
