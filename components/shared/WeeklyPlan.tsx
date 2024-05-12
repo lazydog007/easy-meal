@@ -1,6 +1,6 @@
 import axios from "axios"
+import Image from "next/image"
 import { useState } from "react"
-
 type Props = {}
 
 const WeeklyPlan = (props: Props) => {
@@ -17,9 +17,16 @@ const WeeklyPlan = (props: Props) => {
     setIsGenerating(false)
   }
   return (
-    <div className="flex flex-col items-center h-screen w-full">
+    <div className="flex flex-col items-center p-4  max-w-[900px]">
       {isGenerating ? (
-        <span className="flex loading loading-dots loading-lg"></span> // en vez de loading pon a knuckles bailando
+        // <span className="flex loading loading-dots loading-lg"></span>
+        <Image
+          src="/loading-gif.gif"
+          // src="/images/loading-gif.gif"
+          width={300}
+          height={300}
+          alt="Loading..."
+        />
       ) : (
         <button className="flex btn btn-primary" onClick={() => btnSubmit()}>
           Generate

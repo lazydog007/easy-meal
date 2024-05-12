@@ -20,7 +20,7 @@ const Plan = (props: Props) => {
   })
 
   return (
-    <div className="flex justify-center  overflow-auto px-16 py-10 font-bold text-xl w-full h-full">
+    <div className="flex justify-center overflow-auto px-16 py-10 font-bold text-xl w-full h-full">
       {userProfileLoading && (
         <span className="flex loading loading-dots loading-lg"></span>
       )}
