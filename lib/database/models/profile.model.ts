@@ -25,11 +25,11 @@ type Meal = {
   calories: number
   recipeName: string
   ingredients: Ingredient[]
-  instructions: string
+  instructions: string[]
 }
 
 export declare type MealPlan = {
-  totalCalories: number
+  totalCalories: string
   day?: string // Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
   meals: Meal[]
 }

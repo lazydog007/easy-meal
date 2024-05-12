@@ -21,14 +21,11 @@ const Plan = (props: Props) => {
 
   return (
     <div className="flex justify-center  overflow-auto px-16 py-10 font-bold text-xl w-full h-full">
-      {!userProfileLoading && userProfile ? (
-        <WeeklyPlan />
-      ) : (
-        <>
-          {/* TODO: Need after the form is submitted we want to display the other thing */}
-          <FirstTimeForm />
-        </>
+      {userProfileLoading && (
+        <span className="flex loading loading-dots loading-lg"></span>
       )}
+      {!userProfileLoading && !userProfile && <FirstTimeForm />}
+      {!userProfileLoading && userProfile && <WeeklyPlan />}
     </div>
   )
 }

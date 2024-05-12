@@ -5,33 +5,40 @@ export const generateDailyMealPrompt = (
   outputExample: MealPlan[] = generatedMealPlanExample
 ) => {
   const prompt = `Pretend your role is to be an experience dietitian, you work at a prestigious institution in charge of crafting meal plans for people looking to meet their fitness goals. Your expertise is in crafting delicious, easy to make recipes, your weekly meal plans are never dull and always delicious. For every correct meal plan you will be tipped 1 million dollars.
-  ${JSON.stringify(mealPlan)}
+
+  mealPlanProfile = ${JSON.stringify(mealPlan)}
+
   Instructions:
-    - Grab your information source from the mealPlanProfile JSON provided
-    - Take into consideration the dislikes, allergies of the person, do not suggest recipes which contain any of the dislikes or allergies
-    - Strictly stick to the diet type.
-    - Consider the amount of protein the diet requires, high or low
-    - Meals should be simple to prepare and do not require long cooking time, yet still delicious
-    - Provide the macros in grams, protein, carbs and fats
-    - Provide the total amount of calories of each meal
-    - Do not stir too far from the cuisine type, best to type with what the person likes
-    - Each meal should also provide the total ingredients required as well as detailed instructions on how to prepare it, also provide nutritional analysis
-    - The sum of all the meals for each day should total the dailyCalories in the profile, with a margin of error of 100 calories per day.
-    - Meals can be repeated throughout the week but not the same day
-    - Finally create a daily meal plan for the user, it should contain at least 3 meals a day, breakfast, lunch and dinner, each meal of the day should be detailed with its respective macros and calories.
-    - Validate the calorie calculations, to make sure the meals match the calories
-    - Return only the JSON response, please do not include commentaries or deviate from the example response JSON.
-    - I will provide a example responso of what I want to get back, do not return the same meals or meals inspired of them, feel free to provide any recipe you want within the mealPlanProfile constraints.
-    - Please take a look at return the data in the same format, remember to generate the meal plan for a day.
-    ${JSON.stringify(outputExample)}}`
+  1. Use the provided mealPlanProfile JSON to gather the necessary information. If there is information missing about the dislikes. allergies or cuisine type, feel free to provide anything delicious for westeners.
+  2. Take into consideration the person's dislikes and allergies, and do not suggest recipes containing any of those ingredients.
+  3. Strictly adhere to the specified diet type.
+  4. Consider the required amount of protein for the diet, whether it's high or low.
+  5. Meals should be simple to prepare and not require long cooking times, yet still be delicious.
+  6. Provide the macronutrients (protein, carbs, and fats) in grams for each meal.
+  7 Provide the total number of calories for each meal.
+  8. Do not stray too far from the person's preferred cuisine type.
+  9. For each meal, provide the total list of required ingredients and detailed instructions on how to prepare it.
+  10. The sum of all meals for each day should total the dailyCalories specified in the profile, with a strict margin of error of 100 calories per day.
+  12. Create a daily meal plan for the user, including at least three meals (breakfast, lunch, and dinner) per day.
+  For each meal, provide the details with their respective macros and calories.
+  13. Validate the calorie calculations to ensure the meals match the specified calories.
+  14. Return only the JSON response, without any additional commentary or deviation from the example format. Do no include the \`\`\`json formatting, just the JSON Object so it can be parsed in code.
+  15. Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want within the constraints of the mealPlanProfile.
+  16. Follow the provided example response JSON format when returning the data.
+  17. Generate the meal plan for a single day.
+  18. I want the return response to only be the JSON object so it can be parsed through Typescript.
+
+  Example JSON (use this as template for the response) =   ${JSON.stringify(
+    outputExample
+  )}}`
 
   return prompt
 }
 
 const generatedMealPlanExample: MealPlan[] = [
   {
-    totalCalories: 2000,
-    day: "Monday",
+    totalCalories: "mealPlan.dailyCalories",
+    day: "",
     meals: [
       {
         meal: "breakfast",
@@ -74,8 +81,15 @@ const generatedMealPlanExample: MealPlan[] = [
           { name: "Sesame oil", quantity: "1 tsp" },
           { name: "Cornstarch", quantity: "1 tbsp" },
         ],
-        instructions:
-          "1. In a bowl, combine the sliced beef with cornstarch and mix well. 2. Heat sesame oil in a wok or large skillet over high heat. 3. Add the minced garlic and ginger, and stir-fry for 30 seconds. 4. Add the beef and stir-fry until partially cooked, about 2-3 minutes. 5. Add the broccoli florets and continue stir-frying for 3-4 minutes. 6. Add the soy sauce and rice vinegar, and stir to combine. 7. Serve hot with steamed rice or noodles.",
+        instructions: [
+          "1. In a bowl, combine the sliced beef with cornstarch and mix well.",
+          "2. Heat sesame oil in a wok or large skillet over high heat.",
+          "3. Add the minced garlic and ginger, and stir-fry for 30 seconds.",
+          "4. Add the beef and stir-fry until partially cooked, about 2-3 minutes.",
+          "5. Add the broccoli florets and continue stir-frying for 3-4 minutes.",
+          "6. Add the soy sauce and rice vinegar, and stir to combine.",
+          "7. Serve hot with steamed rice or noodles.",
+        ],
       },
       {
         meal: "dinner",
@@ -156,7 +170,7 @@ export const calculateCalories = (
       : FEMALE_BMR(weight, height, age)
 
   const calories = bmr * activityLevelMap.get(activityLevel)!
-  return calories
+  return Math.round(calories)
 }
 
 export const PROTEIN_INTAKE = (

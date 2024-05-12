@@ -7,12 +7,13 @@ const WeeklyPlan = (props: Props) => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [weeklyPlan, setWeeklyPlan] = useState<Record<string, any> | null>(null)
   const btnSubmit = async () => {
+    // TODO: Implement a retry if it fails to provide the JSON correctly
     setIsGenerating(true)
     const response = await axios.post("/api/generatePlan/daily")
     type JsonRecord = Record<string, any>
+    console.log("response.data", response.data)
     const jsonRecord: JsonRecord = JSON.parse(response.data)
     setWeeklyPlan(jsonRecord)
-    console.log("weeklyPlan", weeklyPlan)
     setIsGenerating(false)
   }
   return (
@@ -36,20 +37,27 @@ const WeeklyPlan = (props: Props) => {
               {weeklyPlan.meals.map((meal: any) => (
                 <div className="card w-full bg-base-100 shadow-xl">
                   <div className="card-body">
-                    <p className="font-bold text-2xl">{meal.meal}</p>
-                    <p>calories: {meal.calories}</p>
-                    <p>macros: Protein: 100 / Carbs: 50 / Fat: 20</p>
+                    <p className="font-bold text-2xl">
+                      {meal.meal}: {meal.recipeName}
+                    </p>
+                    <p>Calories: {meal.calories}</p>
+                    <p>
+                      Macros: Protein {meal.macros.protein} / Carbs{" "}
+                      {meal.macros.carbs} / Fat {meal.macros.fat}
+                    </p>
                     <p>Ingredients</p>
                     <ul>
-                      <li>- ingredient 1</li>
-                      <li>- ingredient 2</li>
-                      <li>- ingredient 3</li>
+                      {meal.ingredients.map((ingredient: any) => (
+                        <li>
+                          - {ingredient.name} | {ingredient.quantity}
+                        </li>
+                      ))}
                     </ul>
                     <p>Instructions</p>
                     <ul>
-                      <li>- step 1</li>
-                      <li>- step 2</li>
-                      <li>- step 3</li>
+                      {meal.instructions.map((instruction: any) => (
+                        <li>- {instruction}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
