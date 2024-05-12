@@ -5,7 +5,7 @@ export const generateDailyMealPrompt = (
   outputExample: MealPlan[] = generatedMealPlanExample
 ) => {
   const prompt = `Pretend your role is to be an experience dietitian, you work at a prestigious institution in charge of crafting meal plans for people looking to meet their fitness goals. Your expertise is in crafting delicious, easy to make recipes, your weekly meal plans are never dull and always delicious. For every correct meal plan you will be tipped 1 million dollars.
-  ${mealPlan.toString()}
+  ${JSON.stringify(mealPlan)}
   Instructions:
     - Grab your information source from the mealPlanProfile JSON provided
     - Take into consideration the dislikes, allergies of the person, do not suggest recipes which contain any of the dislikes or allergies
@@ -23,7 +23,8 @@ export const generateDailyMealPrompt = (
     - Return only the JSON response, please do not include commentaries or deviate from the example response JSON.
     - I will provide a example responso of what I want to get back, do not return the same meals or meals inspired of them, feel free to provide any recipe you want within the mealPlanProfile constraints.
     - Please take a look at return the data in the same format, remember to generate the meal plan for a day.
-    ${outputExample.toString()}`
+    ${JSON.stringify(outputExample)}}`
+
   return prompt
 }
 
@@ -103,6 +104,7 @@ const generatedMealPlanExample: MealPlan[] = [
   },
 ]
 
+//Harris-Benedict equation.
 export const MALE_BMR = (
   weight: number,
   height: number,
@@ -121,30 +123,51 @@ export const FEMALE_BMR = (
   age: number
 ): number => {
   return (
+    447.593 +
+    9.247 * Number(weight) +
+    3.098 * Number(height) -
+    4.33 * Number(age)
+  )
+}
+
+export const activityLevelMap: Map<string, number> = new Map([
+  ["sedentary", 1.2],
+  ["lightly", 1.375],
+  ["moderately", 1.55],
+  ["active", 1.725],
+  // ['extra active', 1.9],
+])
+
+export const calculateCalories = (
+  weight: number,
+  height: number,
+  age: number,
+  gender: string,
+  activityLevel: string
+) => {
+  const bmrM =
     88.362 +
     13.397 * Number(weight) +
     4.799 * Number(height) -
     5.677 * Number(age)
-  )
-}
+  const bmr =
+    gender === "M"
+      ? MALE_BMR(weight, height, age)
+      : FEMALE_BMR(weight, height, age)
 
-export const activityLevelMap: Record<string, number> = {
-  sedentary: 1.2,
-  lightly: 1.375,
-  moderately: 1.55,
-  Active: 1.725,
-  // "Extra active": 1.9,
+  const calories = bmr * activityLevelMap.get(activityLevel)!
+  return calories
 }
 
 export const PROTEIN_INTAKE = (
   weight: number,
   proteinIntake: string
 ): number => {
-  return weight * proteinIntakeMap[proteinIntake]
+  return weight * proteinIntakeMap.get(proteinIntake)!
 }
 
-export const proteinIntakeMap: Record<string, number> = {
-  minimum: 0.8,
-  regular: 1,
-  high: 1.2,
-}
+export const proteinIntakeMap: Map<string, number> = new Map([
+  ["minimum", 0.8],
+  ["regular", 1],
+  ["high", 1.2],
+])

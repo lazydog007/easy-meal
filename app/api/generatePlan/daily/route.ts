@@ -1,16 +1,12 @@
 "use server"
 
 import {
-  activityLevelMap,
-  FEMALE_BMR,
+  calculateCalories,
   generateDailyMealPrompt,
-  MALE_BMR,
   PROTEIN_INTAKE,
 } from "@/constants"
 import { getProfileById } from "@/lib/actions/profile.action"
 import { MealPlanProfile } from "@/lib/database/models/profile.model"
-// import { addMessagesToChat } from "@/lib/actions/chat.actions"
-// import { updateSubscriptionLimits } from "@/lib/actions/user.actions"
 import Anthropic from "@anthropic-ai/sdk"
 import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
@@ -29,58 +25,45 @@ export async function POST(req: Request) {
     if (!userId) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 })
     }
-    // const { model } = await req.json()
-    const model = "claude-3-haiku"
-    // const chatId = chat.chatId
+    const model = "claude-3-sonnet"
 
-    // const prompt = {
-    //   role: "system",
-    //   content: `Al assistant is a brand new, powerful, human-like artificial intelligence.`,
-    // }
-
-    // Remove _id field from objects that have it, MongoDB automatically saves it
-    // const filteredMessages = chat.messages.map((message: any) => {
-    //   return Object.fromEntries(
-    //     Object.entries(message).filter(([key]) => key !== "_id")
-    //   )
-    // })
-
+    // get the userProfile
     const userProfile = await getProfileById(userId!)
 
-    const calculateCalories = (
-      weight: number,
-      height: number,
-      age: number,
-      gender: string,
-      activityLevel: string
-    ) => {
-      const bmr =
-        gender === "M"
-          ? MALE_BMR(weight, height, age)
-          : FEMALE_BMR(weight, height, age)
+    const targetCalories = await calculateCalories(
+      Number(userProfile.weight),
+      Number(userProfile.height),
+      Number(userProfile.age),
+      userProfile.gender,
+      userProfile.activityLevel
+    )
 
-      const calories = bmr * activityLevelMap[activityLevel]
+    const targetProtein = await PROTEIN_INTAKE(
+      Number(userProfile.weight),
+      userProfile.protein
+    )
 
-      return calories
-    }
     const mealPlan: MealPlanProfile = {
-      dailyCalories: calculateCalories(
-        Number(userProfile.weight),
-        Number(userProfile.height),
-        Number(userProfile.age),
-        userProfile.gender,
-        userProfile.activityLevel
-      ),
-      dailyProtein: PROTEIN_INTAKE(
-        Number(userProfile.weight),
-        userProfile.protein
-      ),
+      dailyCalories: targetCalories,
+      dailyProtein: targetProtein,
       diet: userProfile.diet!,
       allergies: userProfile.diet!,
       dislikes: userProfile.diet!,
       cuisine: userProfile.diet!,
     }
-    const prompt = generateDailyMealPrompt(mealPlan)
+
+    console.log("\n")
+    console.log("targetCalories", targetCalories)
+    console.log("\n")
+    console.log("targetProtein", targetProtein)
+    console.log("\n")
+    // console.log("mealPlan", mealPlan)
+
+    // generate prompt
+    const prompt = await generateDailyMealPrompt(mealPlan)
+
+    console.log("\n")
+    console.log("prompt", prompt)
     /**
      * Handle AI Model
      */
@@ -126,26 +109,10 @@ export async function POST(req: Request) {
       console.log("\n")
       console.log("anthropic response", response)
       aiResponse = response.content[0].text
-
-      // DALLE Image Generation
     }
-
-    // const aiMessage = {
-    //   id: v4(),
-    //   role: "assistant",
-    //   content: aiResponse,
-    // }
-
-    // await addMessagesToChat({
-    //   chatId: chatId,
-    //   messages: [userMessage, aiMessage],
-    // })
-
-    // updateSubscriptionLimits(userId!, chat.aiModel)
 
     return NextResponse.json(aiResponse!)
   } catch (error) {
     console.log("something bad happened")
-    // toast.error("Error creating chat" + error)
   }
 }

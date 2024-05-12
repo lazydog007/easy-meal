@@ -19,7 +19,7 @@ const Header = () => {
   }
 
   return (
-    <div className="flex justify-center p-8">
+    <div className="flex justify-center items-center pt-8">
       <div className="w-auto md:w-[700px]">
         <header
           className={cn("navbar rounded-full shadow-2xl border ", {
