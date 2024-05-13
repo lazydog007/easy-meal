@@ -43,7 +43,10 @@ const WeeklyPlan = (props: Props) => {
             <div className="card-body">
               <div className="flex flex-col items-center justify-center">
                 <h2 className="card-title text-4xl p-2">Day 1</h2>
-                <h3 className="card-title">{weeklyPlan.totalCalories}</h3>
+                <h3 className="card-title">
+                  | {weeklyPlan.totalCalories} calories |{" "}
+                  {weeklyPlan.totalProtein}g protein |
+                </h3>
               </div>
               {weeklyPlan.meals.map((meal: any) => (
                 <div className="card w-full bg-base-100 shadow-xl rounded-xl">
@@ -57,7 +60,7 @@ const WeeklyPlan = (props: Props) => {
                       Macros: Protein {meal.macros.protein} / Carbs{" "}
                       {meal.macros.carbs} / Fat {meal.macros.fat}
                     </p>
-                    <details className="collapse collapse-arrow shadow-md rounded-2xl">
+                    <details className="collapse collapse-arrow shadow-md rounded-2xl mt-2">
                       <summary className="collapse-title text-xl bg-secondary/50">
                         Ingredients
                       </summary>
@@ -71,11 +74,11 @@ const WeeklyPlan = (props: Props) => {
                         </ul>
                       </div>
                     </details>
-                    <details className="collapse collapse-arrow shadow-md rounded-2xl">
+                    <details className="collapse collapse-arrow shadow-md rounded-2xl flex mt-2">
                       <summary className="collapse-title text-xl bg-secondary/50">
                         Instructions
                       </summary>
-                      <div className="collapse-content mt-2">
+                      <div className="collapse-content mt-2 ">
                         <ul>
                           {meal.instructions.map((instruction: any) => (
                             <li>{instruction}</li>

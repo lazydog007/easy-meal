@@ -6,34 +6,40 @@ export const generateDailyMealPrompt = (
 ) => {
   const prompt = `Pretend your role is to be an experience dietitian, you work at a prestigious institution in charge of crafting meal plans for people looking to meet their fitness goals. Your expertise is in crafting delicious, easy to make recipes, your weekly meal plans are never dull and always delicious. For every correct meal plan you will be tipped 1 million dollars.
 
-  mealPlanProfile = ${JSON.stringify(mealPlan)}
-
 Instructions:
-1. Use the provided mealPlanProfile JSON to gather the necessary information. If there is information missing about dislikes, allergies, or cuisine type, feel free to provide anything delicious for Westerners.
-2. Take into consideration the person's dislikes and allergies, and do not suggest recipes containing any of those ingredients.
-3. Strictly adhere to the specified diet type.
-4. The amount of protein should be a minimum of the mealPlanProfile dailyProtein; you can always go beyond it.
-5. Meals should be simple to prepare and not require long cooking times, yet still be delicious.
-6. Provide the total number of calories for each meal.
-7. The sum of all meal calories must be equal to the dailyCalories specified in the mealPlanProfile, with a strict margin of error of 100 calories per day.
-8. Do not stray too far from the person's preferred cuisine type.
-9. For each meal, provide the total list of required ingredients and detailed instructions on how to prepare it.
-10. Create a daily meal plan for the user, including at least three meals (breakfast, lunch, and dinner) per day. You can also provide a snack between lunch and dinner if there are enough calories; it should be a minimum of 200 calories.
-11. The serving size of each meal and recipe should be for one person; do not provide recipes for multiple servings.
-12. Return only the JSON response, without any additional commentary or deviation from the example format. Do not include the \`\`\`json formatting, just the JSON object so it can be parsed in code.
-13. Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want within the constraints of the mealPlanProfile.
-14. Follow the provided example response JSON format when returning the data.
-15. Generate the meal plan for a single day. Remember, you can provide more than three meals per day, but it has to be a minimum of three, and ensure the sum of all meals' calories is equal to the mealPlanProfile dailyCalories.
-16. I want the return response to only be the JSON object so it can be parsed through TypeScript.
-17. If the sum of all the calories in the meals provided is not equal to the dailyCalories specified in the mealPlanProfile within the strict margin of error of 100 calories, provide an additional meal or adjust portion sizes to complete the calorie count.
-18. Validate the calorie calculations to ensure the sum of all meal calories matches the specified dailyCalories. Be realistic and accurate about the provided calories.
+- Craft a meal plan with at least four meals (breakfast/lunch/snack/dinner), the calorie distributiion should be 20% breakfast, 35% lunch, 10% snack, 35% dinner
+${
+  mealPlan.cuisine
+    ? `- Strictly adher to this cuisines: ${mealPlan.cuisine}`
+    : ""
+}
+${
+  mealPlan.diet
+    ? `- Strictly adher to this diet: ${mealPlan.diet}, do not suggest anything outside it`
+    : ""
+}
+${
+  mealPlan.dislikes || mealPlan.allergies
+    ? `- Dont provide foods with the following ingredients as the person is sentivie to them: ${mealPlan.dislikes} ${mealPlan.allergies}, this is a must have`
+    : ""
+}
+- Meals should be simple to prepare and not require long cooking times, yet still be delicious. 
+- Provide the total number of calories for each meal as well as its macronutrients.
+- The sum of all the meals (breakfast/lunch/snack/dinner) calories should be between ${JSON.stringify(
+    mealPlan.dailyCalories - 100
+  )} and ${JSON.stringify(mealPlan.dailyCalories + 100)}
+- The sum of all the meals (breakfast/lunch/snack/dinner) protein should be between ${JSON.stringify(
+    mealPlan.dailyProtein - 5
+  )} and ${JSON.stringify(mealPlan.dailyProtein + 5)}
+- The serving size of each meal and recipe should be for one person; do not provide recipes for multiple servings.
+- Return only the JSON response, without any additional commentary or deviation from the example format. Do not include the \`\`\`json formatting, just the JSON object so it can be parsed in code.
+- Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want as long as it within the provided constraints
+- Follow the provided example response JSON format when returning the data.
+- I want the return response to only be the JSON object so it can be parsed through TypeScript.
 
 Example JSON (use this as a template for the response): = ${JSON.stringify(
     outputExample
-  )}}
-  
-  note: notice how the totalCalories === SUM(meals.calories)
-  `
+  )}}  `
 
   return prompt
 }
@@ -41,7 +47,7 @@ Example JSON (use this as a template for the response): = ${JSON.stringify(
 const generatedMealPlanExample: MealPlan[] = [
   {
     totalCalories: "2300", // 500 + 700 + 300 + 800
-    day: "",
+    totalProtein: "175",
     meals: [
       {
         meal: "breakfast",

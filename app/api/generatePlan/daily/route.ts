@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     if (!userId) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 })
     }
-    const model = "claude-3-sonnet"
+    const model = "claude-3-haiku"
 
     // get the userProfile
     const userProfile = await getProfileById(userId!)
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     )
 
     const targetProtein = await PROTEIN_INTAKE(
-      Number(userProfile.weight),
+      Number(userProfile.weight), // convert kg to lb
       "regular"
       // userProfile.protein
     )

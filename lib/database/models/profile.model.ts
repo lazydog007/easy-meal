@@ -30,6 +30,7 @@ type Meal = {
 
 export declare type MealPlan = {
   totalCalories: string
+  totalProtein: string
   day?: string // Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
   meals: Meal[]
 }
