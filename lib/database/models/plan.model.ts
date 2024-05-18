@@ -1,4 +1,4 @@
-import { Document, Schema, model, models } from "mongoose"
+import { Document, Schema, model, models } from "mongoose";
 
 export interface IProfileUpdate extends Document {
   age?: string
@@ -13,23 +13,13 @@ export interface IProfileUpdate extends Document {
   cuisine?: string
 }
 
-const ProfileSchema = new Schema({
-  userId: { type: String, required: true, unique: true },
-  age: { type: String, required: true },
-  gender: { type: String, required: true },
-  weight: { type: String, required: true },
-  height: { type: String, required: true },
-  activityLevel: { type: String, required: true },
-  diet: { type: String },
-  allergies: { type: String },
-  dislikes: { type: String },
-  cuisine: { type: String },
+const MealPlanSchema = new Schema({
+  
 })
-
 const PlanSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   planType: { type: String, required: true },
-  mealPlan: { type: [MealPlan] },
+  mealPlan: { type: MealPlan[] },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
 })
