@@ -13,9 +13,40 @@ export interface IProfileUpdate extends Document {
   cuisine?: string
 }
 
-const MealPlanSchema = new Schema({
-  
-})
+// Meal Plan
+export declare type MealPlanProfile = {
+  dailyCalories: number
+  dailyProtein: number
+  diet?: string
+  allergies?: string
+  dislikes?: string
+  cuisine?: string
+}
+
+type Ingredient = {
+  name: string
+  quantity: string
+}
+
+type Meal = {
+  meal: string
+  macros: {
+    protein: number
+    carbs: number
+    fat: number
+  }
+  calories: number
+  recipeName: string
+  ingredients: Ingredient[]
+  instructions: string[]
+}
+
+export declare type MealPlan = {
+  totalCalories: string
+  totalProtein: string
+  day?: string // Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
+  meals: Meal[]
+}
 const PlanSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   planType: { type: String, required: true },
@@ -24,6 +55,6 @@ const PlanSchema = new Schema({
   endDate: { type: Date, required: true },
 })
 
-const Profile = models?.Profile || model("Profile", ProfileSchema)
+const Profile = models?.Profile || model("Profile", PlanSchema)
 
 export default Profile

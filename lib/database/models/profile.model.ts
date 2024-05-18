@@ -1,40 +1,5 @@
 import { Document, Schema, model, models } from "mongoose"
 
-// Meal Plan
-export declare type MealPlanProfile = {
-  dailyCalories: number
-  dailyProtein: number
-  diet?: string
-  allergies?: string
-  dislikes?: string
-  cuisine?: string
-}
-
-type Ingredient = {
-  name: string
-  quantity: string
-}
-
-type Meal = {
-  meal: string
-  macros: {
-    protein: number
-    carbs: number
-    fat: number
-  }
-  calories: number
-  recipeName: string
-  ingredients: Ingredient[]
-  instructions: string[]
-}
-
-export declare type MealPlan = {
-  totalCalories: string
-  totalProtein: string
-  day?: string // Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
-  meals: Meal[]
-}
-
 // Create Profile
 export declare type CreateProfileParams = {
   userId: string
