@@ -1,6 +1,6 @@
-import { Document, Schema, model, models } from "mongoose";
+import { Document, Schema, model, models } from "mongoose"
 
-export interface IProfileUpdate extends Document {
+export interface IPlanUpdate extends Document {
   age?: string
   gender?: string
   weight?: string
@@ -14,47 +14,41 @@ export interface IProfileUpdate extends Document {
 }
 
 // Meal Plan
-export declare type MealPlanProfile = {
-  dailyCalories: number
-  dailyProtein: number
-  diet?: string
-  allergies?: string
-  dislikes?: string
-  cuisine?: string
-}
+const IngredientSchema: Schema = new Schema({
+  name: { type: String, required: true },
+  quantity: { type: String, required: true },
+})
 
-type Ingredient = {
-  name: string
-  quantity: string
-}
+const MacrosSchema: Schema = new Schema({
+  protein: { type: Number, required: true },
+  carbs: { type: Number, required: true },
+  fat: { type: Number, required: true },
+})
 
-type Meal = {
-  meal: string
-  macros: {
-    protein: number
-    carbs: number
-    fat: number
-  }
-  calories: number
-  recipeName: string
-  ingredients: Ingredient[]
-  instructions: string[]
-}
+const MealSchema: Schema = new Schema({
+  meal: { type: String, required: true },
+  macros: { type: MacrosSchema, required: true },
+  calories: { type: Number, required: true },
+  recipeName: { type: String, required: true },
+  ingredients: { type: [IngredientSchema], required: true },
+  instructions: { type: [String], required: true },
+})
 
-export declare type MealPlan = {
-  totalCalories: string
-  totalProtein: string
-  day?: string // Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
-  meals: Meal[]
-}
+const MealPlanSchema: Schema = new Schema({
+  totalCalories: { type: String, required: true },
+  totalProtein: { type: String, required: true },
+  day: { type: String, required: false },
+  meals: { type: [MealSchema], required: true },
+})
+
 const PlanSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   planType: { type: String, required: true },
-  mealPlan: { type: MealPlan[] },
+  mealPlan: { type: [MealPlanSchema] },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
 })
 
-const Profile = models?.Profile || model("Profile", PlanSchema)
+const Plan = models?.Plan || model("Plan", PlanSchema)
 
-export default Profile
+export default Plan
