@@ -54,6 +54,15 @@ export interface IProfileUpdate extends Document {
   cuisine?: string
 }
 
+export declare type MealPlanProfile = {
+  dailyCalories: number
+  dailyProtein: number
+  diet?: string
+  allergies?: string
+  dislikes?: string
+  cuisine?: string
+}
+
 const ProfileSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   age: { type: String, required: true },

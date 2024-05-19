@@ -66,6 +66,7 @@ export async function POST(req: Request) {
     const aiModelMap: Map<string, string> = new Map([
       ["gpt-3.5-turbo", "gpt-3.5-turbo"],
       ["gpt-4-turbo", "gpt-4-turbo"],
+      ["gpt-4o", "gpt-4o"],
       ["claude-3-haiku", "claude-3-haiku-20240307"],
       ["claude-3-sonnet", "claude-3-sonnet-20240229"],
       ["claude-3-opus", "claude-3-opus-20240229"],
@@ -78,18 +79,16 @@ export async function POST(req: Request) {
 
     // OPENAI call
     if (aiModel!.startsWith("gpt")) {
-      // const response = await openai.chat.completions.create({
-      //   messages: [
-      //     prompt,
-      //     ...filteredMessages,
-      //     {
-      //       role: "user",
-      //       content: userMessage.content,
-      //     },
-      //   ],
-      //   model: aiModel!,
-      // })
-      // aiResponse = response.choices[0].message.content!
+      const response = await openai.chat.completions.create({
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        model: aiModel!,
+      })
+      aiResponse = response.choices[0].message.content!
       // anthropic API call
     } else if (aiModel!.startsWith("claude")) {
       const response = await anthropic.messages.create({
