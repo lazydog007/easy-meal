@@ -106,6 +106,8 @@ export async function POST(req: Request) {
       aiResponse = response.content[0].text
     }
 
+    // TODO: Save the response
+
     return NextResponse.json(aiResponse!)
   } catch (error) {
     console.log("something bad happened")

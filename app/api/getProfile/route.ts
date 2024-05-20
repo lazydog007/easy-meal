@@ -12,8 +12,6 @@ export async function GET(req: NextRequest, res: Response) {
   }
   try {
     const _profile = await getProfileById(userId)
-    console.log("\n")
-    console.log("_profile", _profile)
     return NextResponse.json(_profile)
   } catch (error) {
     console.error(error)

@@ -31,8 +31,6 @@ export async function getProfileById(userId: string) {
 
     const profile = await Profile.findOne({ userId: userId })
 
-    if (!profile) throw new Error("Profile not found")
-
     return JSON.parse(JSON.stringify(profile))
   } catch (error) {
     handleError(error)

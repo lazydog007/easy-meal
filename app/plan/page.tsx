@@ -7,15 +7,20 @@ import axios from "axios"
 type Props = {}
 
 const Plan = (props: Props) => {
-  const {
-    data: userProfile,
-    isLoading: userProfileLoading,
-    // refetch: userProfileRefecth,
-  } = useQuery({
+  const { data: userProfile, isLoading: userProfileLoading } = useQuery({
     queryKey: ["getProfile"],
     queryFn: async () => {
-      const response = await axios.get(`/api/getProfile`)
-      return response.data
+      try {
+        const response = await axios.get(`/api/getProfile`)
+        return response.data
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 500) {
+          // Ignore 500 errors by returning null or a default value
+          return null
+        }
+        // Rethrow if it's not a 500 error or an unknown error
+        throw error
+      }
     },
   })
 
