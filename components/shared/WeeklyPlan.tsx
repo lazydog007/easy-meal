@@ -1,20 +1,27 @@
+import { DailyPlanParams } from "@/lib/database/models/plan.model"
 import axios from "axios"
 import Image from "next/image"
 import { useState } from "react"
+import DailyPlan from "./DailyPlan"
 type Props = {}
 
 const WeeklyPlan = (props: Props) => {
   const [isGenerating, setIsGenerating] = useState(false)
-  const [weeklyPlan, setWeeklyPlan] = useState<Record<string, any> | null>(null)
+  const [dailyPlan, setDailyPlan] = useState<DailyPlanParams | null>(null)
+  // const [weeklyPlan, setWeeklyPlan] = useState<CreatePlanParams | null>(null)
   const btnSubmit = async () => {
     // TODO: Implement a retry if it fails to provide the JSON correctly
     setIsGenerating(true)
     const response = await axios.post("/api/generatePlan/daily")
-    type JsonRecord = Record<string, any>
-    const jsonRecord: JsonRecord = JSON.parse(response.data)
-    // setWeeklyPlan(jsonRecord)
+    // type JsonRecord = Record<string, any>
+    // const jsonRecord: JsonRecord = JSON.parse(response.data)
+    console.log("response: " + response)
+    console.log("response.data: " + response.data)
+    setDailyPlan(response.data)
     setIsGenerating(false)
   }
+
+  // TODO: Need to check if the user has a current plan already then you can apply scenario 1,2,3
   return (
     <div className="flex flex-col justify center items-center p-4  max-w-[900px]">
       {isGenerating ? (
@@ -36,62 +43,7 @@ const WeeklyPlan = (props: Props) => {
         </button>
       )}
 
-      {!isGenerating && weeklyPlan && (
-        <div className="">
-          <div className="card w-full bg-base-100 shadow-2xl mt-4">
-            <div className="card-body">
-              <div className="flex flex-col items-center justify-center">
-                <h2 className="card-title text-4xl p-2">Day 1</h2>
-                <h3 className="card-title">
-                  | {weeklyPlan.totalCalories} calories |{" "}
-                  {weeklyPlan.totalProtein}g protein |
-                </h3>
-              </div>
-              {weeklyPlan.meals.map((meal: any) => (
-                <div className="card w-full bg-base-100 shadow-xl rounded-xl">
-                  <div className="card-body">
-                    <p className="font-bold text-2xl">
-                      {meal.meal.charAt(0).toUpperCase() + meal.meal.slice(1)}:{" "}
-                      {meal.recipeName}
-                    </p>
-                    <p>Calories: {meal.calories}</p>
-                    <p>
-                      Macros: Protein {meal.macros.protein} / Carbs{" "}
-                      {meal.macros.carbs} / Fat {meal.macros.fat}
-                    </p>
-                    <details className="collapse collapse-arrow shadow-md rounded-2xl mt-2">
-                      <summary className="collapse-title text-xl bg-secondary/50">
-                        Ingredients
-                      </summary>
-                      <div className="collapse-content mt-2">
-                        <ul>
-                          {meal.ingredients.map((ingredient: any) => (
-                            <li>
-                              - {ingredient.name} | {ingredient.quantity}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </details>
-                    <details className="collapse collapse-arrow shadow-md rounded-2xl flex mt-2">
-                      <summary className="collapse-title text-xl bg-secondary/50">
-                        Instructions
-                      </summary>
-                      <div className="collapse-content mt-2 ">
-                        <ul>
-                          {meal.instructions.map((instruction: any) => (
-                            <li>{instruction}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </details>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {!isGenerating && dailyPlan && <DailyPlan dailyPlanParams={dailyPlan} />}
     </div>
   )
 }

@@ -1,8 +1,35 @@
 import { Schema, model, models } from "mongoose"
 
+export declare type DailyPlanParams = {
+  totalCalories: string
+  totalProtein: string
+  totalCarbs: string
+  totalFat: string
+  day?: string
+  meals: [
+    {
+      meal: string
+      macros: {
+        protein: number
+        carbs: number
+        fat: number
+      }
+      calories: number
+      recipeName: string
+      ingredients: [
+        {
+          name: string
+          quantity: string
+        }
+      ]
+      instructions: string[]
+    }
+  ]
+}
+
 export declare type CreatePlanParams = {
   userId: string
-  planType: string
+  planType: string // Daily, Monthly, Yearly
   mealPlan: [
     {
       totalCalories: string

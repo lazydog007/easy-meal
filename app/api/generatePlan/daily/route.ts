@@ -5,9 +5,8 @@ import {
   generateDailyMealPrompt,
   PROTEIN_INTAKE,
 } from "@/constants"
-import { createPlan } from "@/lib/actions/plan.action"
 import { getProfileById } from "@/lib/actions/profile.action"
-import { CreatePlanParams } from "@/lib/database/models/plan.model"
+import { DailyPlanParams } from "@/lib/database/models/plan.model"
 import { MealPlanProfile } from "@/lib/database/models/profile.model"
 import Anthropic from "@anthropic-ai/sdk"
 import { auth } from "@clerk/nextjs"
@@ -103,95 +102,41 @@ export async function POST(req: Request) {
         ],
         model: aiModel!,
       })
-      // console.log("\n")
-      // console.log("anthropic response", response)
       aiResponse = response.content[0].text
     }
 
-    // interface Meal {
-    //   meal: string
-    //   macros: {
-    //     protein: number
-    //     carbs: number
-    //     fat: number
-    //   }
-    //   calories: number
-    //   recipeName: string
-    //   ingredients: {
-    //     name: string
-    //     quantity: string
-    //   }[]
-    //   instructions: string[]
-    // }
+    // This only generates a response for one day
+    // should I add a clause to save the response and add it to the current weekly plan??
+    type JsonRecord = Record<string, any>
+    const parsedContent = JSON.parse(aiResponse!)
 
-    // interface DayPlan {
-    //   totalCalories: number
-    //   totalProtein: number
-    //   meals: Meal[]
-    // }
-
-    // interface CreatePlanParams {
-    //   userId: string
-    //   planType: string
-    //   mealPlan: DayPlan[]
-    //   startDate: Date
-    //   endDate: Date
-    // }
-
-    // TODO: Save the response
-    try {
-      type JsonRecord = Record<string, any>
-      const parsedContent = JSON.parse(aiResponse!)
-
-      const createPlanParams: CreatePlanParams = {
-        userId: userId,
-        planType: "abc123",
-        mealPlan: [
-          {
-            totalCalories: parsedContent.totalCalories,
-            totalProtein: parsedContent.totalProtein,
-            totalFat: "0",
-            totalCarbs: "0",
-            // totalCarbs: parsedContent.meals.reduce(
-            //   (sum: number, meal: Meal) => sum + meal.macros.carbs,
-            //   0
-            // ),
-            // totalFat: parsedContent.meals.reduce(
-            //   (sum: number, meal: Meal) => sum + meal.macros.fat,
-            //   0
-            // ),
-            meals: parsedContent.meals.map((meal: any) => ({
-              meal: meal.meal,
-              macros: {
-                protein: meal.macros.protein,
-                carbs: meal.macros.carbs,
-                fat: meal.macros.fat,
-              },
-              calories: meal.calories,
-              recipeName: meal.recipeName,
-              ingredients: meal.ingredients.map((ingredient: any) => ({
-                name: ingredient.name,
-                quantity: ingredient.quantity,
-              })),
-              instructions: meal.instructions,
-            })),
-          },
-        ],
-        startDate: new Date(), // Example start date
-        endDate: new Date(), // Example end date
-      }
-
-      console.log(
-        "createPlanParams JSON: " + JSON.stringify(createPlanParams, null, 2)
-      )
-
-      const savedPlan = await createPlan(createPlanParams)
-      console.log("savedPlan", savedPlan)
-    } catch (error) {
-      console.log("Error: " + error)
+    const dailyPlanParams: DailyPlanParams = {
+      totalCalories: parsedContent.totalCalories,
+      totalProtein: parsedContent.totalProtein,
+      totalFat: "0",
+      totalCarbs: "0",
+      meals: parsedContent.meals.map((meal: any) => ({
+        meal: meal.meal,
+        macros: {
+          protein: meal.macros.protein,
+          carbs: meal.macros.carbs,
+          fat: meal.macros.fat,
+        },
+        calories: meal.calories,
+        recipeName: meal.recipeName,
+        ingredients: meal.ingredients.map((ingredient: any) => ({
+          name: ingredient.name,
+          quantity: ingredient.quantity,
+        })),
+        instructions: meal.instructions,
+      })),
     }
 
-    return NextResponse.json(aiResponse!)
+    console.log(
+      "dailyPlanParams JSON: " + JSON.stringify(dailyPlanParams, null, 2)
+    )
+
+    return NextResponse.json(dailyPlanParams)
   } catch (error) {
     console.log("something bad happened")
   }
