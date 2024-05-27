@@ -1,16 +1,72 @@
-import { Document, Schema, model, models } from "mongoose"
+import { Schema, model, models } from "mongoose"
 
-export interface IPlanUpdate extends Document {
-  age?: string
-  gender?: string
-  weight?: string
-  height?: string
-  activityLevel?: string
-  diet?: string
-  protein?: string
-  allergies?: string
-  dislikes?: string
-  cuisine?: string
+export declare type CreatePlanParams = {
+  userId: string
+  planType: string
+  mealPlan: [
+    {
+      totalCalories: string
+      totalProtein: string
+      totalCarbs: string
+      totalFat: string
+      day?: string
+      meals: [
+        {
+          meal: string
+          macros: {
+            protein: number
+            carbs: number
+            fat: number
+          }
+          calories: number
+          recipeName: string
+          ingredients: [
+            {
+              name: string
+              quantity: string
+            }
+          ]
+          instructions: string[]
+        }
+      ]
+    }
+  ]
+  startDate: Date
+  endDate: Date
+}
+
+export declare type UpdatePlanParams = {
+  planType?: string
+  mealPlan?: [
+    {
+      totalCalories?: string
+      totalProtein?: string
+      totalCarbs?: string
+      totalFat?: string
+      day?: string
+      meals?: [
+        {
+          meal?: string
+          macros?: {
+            protein?: number
+            carbs?: number
+            fat?: number
+          }
+          calories?: number
+          recipeName?: string
+          ingredients?: [
+            {
+              name?: string
+              quantity?: string
+            }
+          ]
+          instructions?: string[]
+        }
+      ]
+    }
+  ]
+  startDate?: Date
+  endDate?: Date
 }
 
 // Meal Plan
@@ -37,6 +93,8 @@ const MealSchema: Schema = new Schema({
 const MealPlanSchema: Schema = new Schema({
   totalCalories: { type: String, required: true },
   totalProtein: { type: String, required: true },
+  totalCarbs: { type: String, required: true },
+  totalFat: { type: String, required: true },
   day: { type: String, required: false },
   meals: { type: [MealSchema], required: true },
 })

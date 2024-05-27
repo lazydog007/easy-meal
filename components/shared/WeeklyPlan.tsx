@@ -11,9 +11,8 @@ const WeeklyPlan = (props: Props) => {
     setIsGenerating(true)
     const response = await axios.post("/api/generatePlan/daily")
     type JsonRecord = Record<string, any>
-    console.log("response.data", response.data)
     const jsonRecord: JsonRecord = JSON.parse(response.data)
-    setWeeklyPlan(jsonRecord)
+    // setWeeklyPlan(jsonRecord)
     setIsGenerating(false)
   }
   return (
