@@ -22,7 +22,7 @@ export async function createPlan(plan: CreatePlanParams) {
 export async function getPlanById(userId: string) {
   try {
     await connectToDatabase()
-    const plan = await Plan.findOne({ userId: userId })
+    const plan = await Plan.find({ userId: userId })
     return JSON.parse(JSON.stringify(plan))
   } catch (error) {
     handleError(error)

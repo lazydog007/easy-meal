@@ -24,6 +24,7 @@ const Plan = (props: Props) => {
     },
   })
 
+  // TODO: Here we are going to do the chekcing if the user has a current plan
   return (
     <div className="flex justify-center overflow-auto px-16 py-10 font-bold text-xl w-full h-full">
       {userProfileLoading && (

@@ -2,7 +2,6 @@ import { DailyPlanParams } from "@/lib/database/models/plan.model"
 import axios from "axios"
 import Image from "next/image"
 import { useState } from "react"
-import DailyPlan from "./DailyPlan"
 type Props = {}
 
 const WeeklyPlan = (props: Props) => {
@@ -30,7 +29,6 @@ const WeeklyPlan = (props: Props) => {
           <p>Chill for a bit</p>
           <Image
             src="/loading-gif.gif"
-            // src="/images/loading-gif.gif"
             width={300}
             height={300}
             alt="Loading..."
@@ -43,7 +41,8 @@ const WeeklyPlan = (props: Props) => {
         </button>
       )}
 
-      {!isGenerating && dailyPlan && <DailyPlan dailyPlanParams={dailyPlan} />}
+      {/* showcase re-generate or save */}
+      {!isGenerating && dailyPlan && <></>}
     </div>
   )
 }
