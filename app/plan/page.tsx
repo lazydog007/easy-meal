@@ -1,6 +1,5 @@
 "use client"
 import FirstTimeForm from "@/components/shared/FirstTimeForm"
-import WeeklyPlan from "@/components/shared/WeeklyPlan"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
@@ -30,8 +29,8 @@ const Plan = (props: Props) => {
       {userProfileLoading && (
         <span className="flex loading loading-dots loading-lg"></span>
       )}
-      {!userProfileLoading && !userProfile && <FirstTimeForm />}
-      {!userProfileLoading && userProfile && <WeeklyPlan />}
+      {!userProfileLoading && userProfile && <FirstTimeForm />}
+      {/* {!userProfileLoading && userProfile && <WeeklyPlan />} */}
     </div>
   )
 }

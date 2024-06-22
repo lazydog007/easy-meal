@@ -2,6 +2,7 @@ import { DailyPlanParams } from "@/lib/database/models/plan.model"
 import axios from "axios"
 import Image from "next/image"
 import { useState } from "react"
+import DailyPlan from "./DailyPlan"
 type Props = {}
 
 const WeeklyPlan = (props: Props) => {
@@ -25,8 +26,8 @@ const WeeklyPlan = (props: Props) => {
     <div className="flex flex-col justify center items-center p-4  max-w-[900px]">
       {isGenerating ? (
         // <span className="flex loading loading-dots loading-lg"></span>
-        <div className="flex flex-col justify-center items-center gap-4 p-4 rounded-xl">
-          <p>Chill for a bit</p>
+        <div className="flex flex-col justify-center  h-full items-center gap-4 p-4 rounded-xl">
+          <p>Chill</p>
           <Image
             src="/loading-gif.gif"
             width={300}
@@ -36,13 +37,24 @@ const WeeklyPlan = (props: Props) => {
           />
         </div>
       ) : (
-        <button className="flex btn btn-primary" onClick={() => btnSubmit()}>
-          Generate
-        </button>
+        <div className="flex items-center h-full ">
+          {!dailyPlan && (
+            <div
+              className="flex btn btn-primary btn-lg items-center  font-bold text-2xl"
+              onClick={() => btnSubmit()}
+            >
+              Crea un Plan
+            </div>
+          )}
+        </div>
       )}
 
       {/* showcase re-generate or save */}
-      {!isGenerating && dailyPlan && <></>}
+      {!isGenerating && dailyPlan && (
+        <>
+          <DailyPlan dailyPlanParams={dailyPlan}></DailyPlan>
+        </>
+      )}
     </div>
   )
 }

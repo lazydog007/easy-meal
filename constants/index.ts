@@ -1,8 +1,8 @@
-import { MealPlan, MealPlanProfile } from "@/lib/database/models/profile.model"
+import { MealPlanProfile } from "@/lib/database/models/profile.model"
 
 export const generateDailyMealPrompt = (
   mealPlan: MealPlanProfile,
-  outputExample: MealPlan[] = generatedMealPlanExample
+  outputExample = generatedMealPlanExample
 ) => {
   const prompt = `Pretend your role is to be an experience dietitian, you work at a prestigious institution in charge of crafting meal plans for people looking to meet their fitness goals. Your expertise is in crafting delicious, easy to make recipes, your weekly meal plans are never dull and always delicious. For every correct meal plan you will be tipped 1 million dollars.
 
@@ -32,19 +32,24 @@ ${
     mealPlan.dailyProtein - 5
   )} and ${JSON.stringify(mealPlan.dailyProtein + 5)}
 - The serving size of each meal and recipe should be for one person; do not provide recipes for multiple servings.
+- The recipes should use the metric system for measurements.
 - Return only the JSON response, without any additional commentary or deviation from the example format. Do not include the \`\`\`json formatting, just the JSON object so it can be parsed in code.
 - Do not return the same meals or meals inspired by the example response. Feel free to provide any recipe you want as long as it within the provided constraints
 - Follow the provided example response JSON format when returning the data.
 - I want the return response to only be the JSON object so it can be parsed through TypeScript.
+- The response should be in spanish except for the keys in the JSON object, the JSON object keys should be exactly as the output example but the values should be in spanish.
 
 Example JSON (use this as a template for the response): = ${JSON.stringify(
     outputExample
-  )}}  `
+  )}}  
+  
+
+  `
 
   return prompt
 }
 
-const generatedMealPlanExample: MealPlan[] = [
+const generatedMealPlanExample = [
   {
     totalCalories: "2300", // 500 + 700 + 300 + 800
     totalProtein: "175",
@@ -65,8 +70,8 @@ const generatedMealPlanExample: MealPlan[] = [
             name: "Mixed vegetables (bell peppers, onions, mushrooms)",
             quantity: "100g",
           },
-          { name: "Low-sodium soy sauce", quantity: "1 tbsp" },
-          { name: "Sesame oil", quantity: "1 tsp" },
+          { name: "Low-sodium soy sauce", quantity: "10 ml" },
+          { name: "Sesame oil", quantity: "2 ml" },
         ],
         instructions: [
           "1. Beat the eggs with soy sauce and a pinch of salt and pepper",
@@ -89,11 +94,11 @@ const generatedMealPlanExample: MealPlan[] = [
           { name: "Lean beef sirloin", quantity: "150g, thinly sliced" },
           { name: "Broccoli florets", quantity: "200g" },
           { name: "Garlic", quantity: "2 cloves, minced" },
-          { name: "Ginger", quantity: "1 tbsp, minced" },
-          { name: "Low-sodium soy sauce", quantity: "2 tbsp" },
-          { name: "Rice vinegar", quantity: "1 tbsp" },
-          { name: "Sesame oil", quantity: "1 tsp" },
-          { name: "Cornstarch", quantity: "1 tbsp" },
+          { name: "Ginger", quantity: "20g, minced" },
+          { name: "Low-sodium soy sauce", quantity: "20 ml" },
+          { name: "Rice vinegar", quantity: "10 ml" },
+          { name: "Sesame oil", quantity: "10 ml" },
+          { name: "Cornstarch", quantity: "10 ml" },
         ],
         instructions: [
           "1. In a bowl, combine the sliced beef with cornstarch and mix well.",
@@ -136,12 +141,12 @@ const generatedMealPlanExample: MealPlan[] = [
         ingredients: [
           { name: "Whole wheat pasta", quantity: "100g, dry" },
           { name: "Salmon fillets", quantity: "160g" },
-          { name: "Basil pesto", quantity: "1/4 cup" },
-          { name: "Cherry tomatoes", quantity: "1 cup, halved" },
-          { name: "Spinach", quantity: "1 cup, packed" },
+          { name: "Basil pesto", quantity: "20g" },
+          { name: "Cherry tomatoes", quantity: "50g" },
+          { name: "Spinach", quantity: "50g" },
           { name: "Garlic", quantity: "2 cloves, minced" },
-          { name: "Olive oil", quantity: "1 tbsp" },
-          { name: "Lemon juice", quantity: "1 tbsp" },
+          { name: "Olive oil", quantity: "10ml" },
+          { name: "Lemon juice", quantity: "10 ml" },
           { name: "Salt and pepper", quantity: "to taste" },
         ],
         instructions: [

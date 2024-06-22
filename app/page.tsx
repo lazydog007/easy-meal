@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignedIn, SignedOut } from "@clerk/nextjs"
 import Link from "next/link"
 
 // TODO: Make this a sick landing page
@@ -9,9 +9,9 @@ export default function Home() {
       <div className="flex flex-col items-center text-center">
         <SignedIn>
           <div className="flex gap-2 items-center">
-            <div className="">
+            {/* <div className="">
               <UserButton afterSignOutUrl="/" />
-            </div>
+            </div> */}
             <h1 className="text-5xl font-semibold">Easy Meal</h1>
           </div>
           <div className="flex items-center justify-center bg-primary rounded-full w-60 h-60 mt-4">

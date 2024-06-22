@@ -10,10 +10,10 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
       <div className="card w-full bg-base-100 shadow-2xl mt-4">
         <div className="card-body">
           <div className="flex flex-col items-center justify-center">
-            <h2 className="card-title text-4xl p-2">Day 1</h2>
+            <h2 className="card-title text-4xl p-2">Dia 1</h2>
             <h3 className="card-title">
-              | {dailyPlanParams.totalCalories} calories |{" "}
-              {dailyPlanParams.totalProtein}g protein |
+              | {dailyPlanParams.totalCalories} calorias |{" "}
+              {dailyPlanParams.totalProtein}g proteina |
             </h3>
           </div>
           {dailyPlanParams.meals.map((meal: any) => (
@@ -23,14 +23,14 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
                   {meal.meal.charAt(0).toUpperCase() + meal.meal.slice(1)}:{" "}
                   {meal.recipeName}
                 </p>
-                <p>Calories: {meal.calories}</p>
+                <p>Calorias: {meal.calories}</p>
                 <p>
-                  Macros: Protein {meal.macros.protein} / Carbs{" "}
-                  {meal.macros.carbs} / Fat {meal.macros.fat}
+                  Macros: Proteina {meal.macros.protein} / Carbs{" "}
+                  {meal.macros.carbs} / Grasa {meal.macros.fat}
                 </p>
                 <details className="collapse collapse-arrow shadow-md rounded-2xl mt-2">
                   <summary className="collapse-title text-xl bg-secondary/50">
-                    Ingredients
+                    Ingredientes
                   </summary>
                   <div className="collapse-content mt-2">
                     <ul>
@@ -44,7 +44,7 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
                 </details>
                 <details className="collapse collapse-arrow shadow-md rounded-2xl flex mt-2">
                   <summary className="collapse-title text-xl bg-secondary/50">
-                    Instructions
+                    Instructiones
                   </summary>
                   <div className="collapse-content mt-2 ">
                     <ul>

@@ -1,6 +1,7 @@
 "use client"
 import { DARK_MODE, LIGHT_MODE, ThemeContext } from "@/context/ThemeContext"
 import { cn } from "@/lib/utils"
+import { UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 
@@ -42,6 +43,7 @@ const Header = () => {
             </div>
           </div>
           <div className="navbar-end">
+            <UserButton afterSignOutUrl="/" />
             <label className="swap swap-rotate px-8">
               {/* this hidden checkbox controls the state */}
               <input

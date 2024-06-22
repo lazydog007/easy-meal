@@ -1,5 +1,5 @@
-import Header from "@/components/shared/Header"
 import { SignedIn, SignedOut } from "@clerk/nextjs"
+import Header from "../../components/shared/Header"
 import "../globals.css"
 
 export default function PlanLayout({

@@ -88,7 +88,7 @@ const FirstTimeForm = (props: Props) => {
   const infoForm = () => {
     return (
       <>
-        <p className="text-4xl mt-4">{`Let's get started`}</p>
+        <p className="text-4xl mt-4">Comencemos</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
