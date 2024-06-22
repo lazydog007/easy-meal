@@ -16,8 +16,11 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
               {dailyPlanParams.totalProtein}g proteina |
             </h3>
           </div>
-          {dailyPlanParams.meals.map((meal: any) => (
-            <div className="card w-full bg-base-100 shadow-xl rounded-xl">
+          {dailyPlanParams.meals.map((meal: any, index) => (
+            <div
+              className="card w-full bg-base-100 shadow-xl rounded-xl"
+              key={index}
+            >
               <div className="card-body">
                 <p className="font-bold text-2xl">
                   {meal.meal.charAt(0).toUpperCase() + meal.meal.slice(1)}:{" "}
@@ -34,8 +37,8 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
                   </summary>
                   <div className="collapse-content mt-2">
                     <ul>
-                      {meal.ingredients.map((ingredient: any) => (
-                        <li>
+                      {meal.ingredients.map((ingredient: any, index: any) => (
+                        <li key={index}>
                           - {ingredient.name} | {ingredient.quantity}
                         </li>
                       ))}
@@ -48,8 +51,8 @@ const DailyPlan = ({ dailyPlanParams }: Props) => {
                   </summary>
                   <div className="collapse-content mt-2 ">
                     <ul>
-                      {meal.instructions.map((instruction: any) => (
-                        <li>{instruction}</li>
+                      {meal.instructions.map((instruction: any, index: any) => (
+                        <li key={index}>{instruction}</li>
                       ))}
                     </ul>
                   </div>
